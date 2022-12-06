@@ -37,6 +37,8 @@ const defaultLists = [
   },
 ];
 
+console.log(process.env.NODE_ENV, "node env");
+
 const client = new yorkie.Client("https://api.yorkie.dev");
 const doc = new yorkie.Document("vuejs-kanban");
 

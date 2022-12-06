@@ -2,7 +2,6 @@ name: GitHub Page Publish
 
 env:
   CI: false
-  NODE_ENV: "production"
 
 on:
   push:
