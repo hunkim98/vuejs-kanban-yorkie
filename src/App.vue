@@ -1,47 +1,47 @@
 <script>
-import yorkie from 'yorkie-js-sdk';
+import yorkie from "yorkie-js-sdk";
 
 const defaultLists = [
   {
-    title: 'Todo',
+    title: "Todo",
     cards: [
       {
-        title: 'Pruning document',
+        title: "Pruning document",
       },
       {
-        title: 'Clean up codes'
-      }
-    ]
+        title: "Clean up codes",
+      },
+    ],
   },
   {
-    title: 'Doing',
+    title: "Doing",
     cards: [
       {
-        title: 'Array operations',
-      }
-    ]
+        title: "Array operations",
+      },
+    ],
   },
   {
-    title: 'Done',
+    title: "Done",
     cards: [
       {
-        title: 'Create a sample page',
+        title: "Create a sample page",
       },
       {
-        title: 'Launch demo site'
-      }
-    ]
+        title: "Launch demo site",
+      },
+    ],
   },
 ];
 
-const client = new yorkie.Client('http://localhost:8080');
-const doc = new yorkie.Document('vuejs-kanban');
+const client = new yorkie.Client("https://api.yorkie.dev");
+const doc = new yorkie.Document("vuejs-kanban");
 
 export default {
   data() {
     return {
       lists: [],
-      title: '',
+      title: "",
       opened: null,
     };
   },
@@ -53,10 +53,10 @@ export default {
       this.$nextTick(function () {
         if (index === 0) {
           // Open add list form
-          this.$refs['addListForm'].querySelector('input').focus();
+          this.$refs["addListForm"].querySelector("input").focus();
         } else {
           // Or open add card form
-          this.$refs['addCardForm'][index - 1].querySelector('input').focus();
+          this.$refs["addCardForm"][index - 1].querySelector("input").focus();
         }
       });
     },
@@ -66,12 +66,11 @@ export default {
       await client.activate();
       await client.attach(doc);
 
-
       doc.update((root) => {
         if (!root.lists) {
           root.lists = defaultLists;
         }
-      }, 'create default list if not exists');
+      }, "create default list if not exists");
 
       doc.subscribe((event) => {
         this.lists = doc.getRoot().lists;
@@ -94,13 +93,13 @@ export default {
     },
 
     addCard(list) {
-      if (this.title === '') return;
+      if (this.title === "") return;
 
       doc.update((root) => {
         root.lists.getElementByID(list.getID()).cards.push({
           title: this.title,
         });
-        this.title = '';
+        this.title = "";
       }, `add new card by ${client.getID()}`);
     },
 
@@ -111,14 +110,14 @@ export default {
     },
 
     addList() {
-      if (this.title === '') return;
+      if (this.title === "") return;
 
       doc.update((root) => {
         root.lists.push({
           title: this.title,
           cards: [],
         });
-        this.title = '';
+        this.title = "";
       }, `add new list by ${client.getID()}`);
     },
 
@@ -128,7 +127,7 @@ export default {
       }, `delete a list by ${client.getID()}`);
     },
   },
-}
+};
 </script>
 
 <template>
@@ -141,25 +140,49 @@ export default {
     </div>
     <div class="add-card" ref="addCardForm">
       <div v-if="isOpened(index + 1)" class="add-form">
-        <input type="text" placeholder="Enter card title" v-model="title" v-on:keyup.enter="addCard(list)"
-          v-on:keyup.esc="closeForm()">
+        <input
+          type="text"
+          placeholder="Enter card title"
+          v-model="title"
+          v-on:keyup.enter="addCard(list)"
+          v-on:keyup.esc="closeForm()"
+        />
         <div class="buttons">
-          <input type="button" value="Add" v-on:click="addCard(list)">
-          <input type="button" value="Close" class="pull-right" v-on:click="closeForm()">
+          <input type="button" value="Add" v-on:click="addCard(list)" />
+          <input
+            type="button"
+            value="Close"
+            class="pull-right"
+            v-on:click="closeForm()"
+          />
         </div>
       </div>
-      <div v-else class="add-card-opener" v-on:click="openForm(index + 1)">Add another card</div>
+      <div v-else class="add-card-opener" v-on:click="openForm(index + 1)">
+        Add another card
+      </div>
     </div>
   </div>
   <div class="add-list" ref="addListForm">
     <div v-if="isOpened(0)" class="add-form">
-      <input type="text" placeholder="Enter list title" v-model="title" v-on:keyup.enter="addList()"
-        v-on:keyup.esc="closeForm()">
+      <input
+        type="text"
+        placeholder="Enter list title"
+        v-model="title"
+        v-on:keyup.enter="addList()"
+        v-on:keyup.esc="closeForm()"
+      />
       <div class="buttons">
-        <input type="button" value="Add" v-on:click="addList()">
-        <input type="button" value="Close" class="pull-right" v-on:click="closeForm()">
+        <input type="button" value="Add" v-on:click="addList()" />
+        <input
+          type="button"
+          value="Close"
+          class="pull-right"
+          v-on:click="closeForm()"
+        />
       </div>
     </div>
-    <div v-else class="add-list-opener" v-on:click="openForm(0)">Add another list</div>
+    <div v-else class="add-list-opener" v-on:click="openForm(0)">
+      Add another list
+    </div>
   </div>
 </template>
