@@ -11,8 +11,9 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  //https://stackoverflow.com/questions/68380194/tranform-vue-config-js-to-vite-config-js-build-path
   base:
     process.env.NODE_ENV === "production"
-      ? "./" // prod
+      ? "/vuejs-kanban-yorkie/" // prod
       : "/", // dev
 });
