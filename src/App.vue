@@ -11,6 +11,9 @@ const defaultLists = [
       {
         title: "Clean up codes",
       },
+      {
+        title: "Add a new feature",
+      },
     ],
   },
   {
